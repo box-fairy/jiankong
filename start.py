@@ -8,9 +8,13 @@ import configparser
 import os
 
 
+jiankong_douyin_interval = 900
+jiankong_thread_interval = 300
+
+
 def jankong_douyin(author_page_link, owner):
     douyin = DouYinJianKong(author_page_link, owner)
-    douyin.start(60)
+    douyin.start(jiankong_douyin_interval)
 
 
 # def jankong_kuaishou(author_id, owner, jiankong_list):
@@ -80,7 +84,7 @@ if __name__ == "__main__":
                 thread.start()
                 count_thread()
 
-        time.sleep(300)
+        time.sleep(jiankong_thread_interval)
 
     # for owner in owners_douyin:
     #     for page in owners_douyin[owner]:
