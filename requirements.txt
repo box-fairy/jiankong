@@ -1,0 +1,4 @@
+fontTools==4.38.0
+lxml==4.9.2
+PyQt5==5.15.9
+requests==2.28.1
