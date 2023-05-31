@@ -10,7 +10,7 @@ from mail import send_mail
 from message import send_txt
 import os
 import configparser
-import henhenmao
+import henghengmao
 
 
 def find_in_config(owner, author_page_link):

@@ -5,9 +5,9 @@ user_id = '0AC8C1EC28EA5DBD46B0795EB7DB51B5'  # 这里改成你自己的 userId
 secret_key = '5583b23c31ce281b4484e1272e9327ef'  # 这里改成你自己的 secretKey
 
 
-def get_dy_profile():
+def get_dy_profile(auth_url):
     # 参数
-    url = 'https://v.douyin.com/Dw9mTga/'
+    url = auth_url
 
     params = {
         'userId': user_id,
