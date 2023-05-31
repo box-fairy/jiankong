@@ -7,13 +7,14 @@ import time
 import configparser
 import os
 
-
+#监控对标首页间隔时间
 jiankong_douyin_interval = 900
+#监控线程间隔时间
 jiankong_thread_interval = 300
 
 
-def jankong_douyin(author_page_link, owner):
-    douyin = DouYinJianKong(author_page_link, owner)
+def jankong_douyin(author_page_link, shipinhao_acount_name):
+    douyin = DouYinJianKong(author_page_link, shipinhao_acount_name)
     douyin.start(jiankong_douyin_interval)
 
 
@@ -77,6 +78,7 @@ if __name__ == "__main__":
                 page = args[0]
                 owner = args[1]
                 send_txt("加入监控： " + page)
+                #启动监控线程
                 thread = threading.Thread(target=jankong_douyin, args=(page, owner))
                 time.sleep(1)
                 jiankong_list_current[args] = thread.name

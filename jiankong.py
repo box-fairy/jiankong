@@ -4,13 +4,13 @@ import random
 import time
 import datetime
 
-from douyin3 import DouYin
-#from kuaishou import KuaiShou
+# from kuaishou import KuaiShou
 
 from mail import send_mail
 from message import send_txt
 import os
 import configparser
+import henhenmao
 
 
 def find_in_config(owner, author_page_link):
@@ -34,14 +34,9 @@ class DouYinJianKong(object):
     def __init__(self, author_page_link, owner):
         self.owner = owner
         self.author_page_link = author_page_link
-        self.saved_aweme_ids = None
+        self.saved_posts = None
 
     def start(self, interval):
-        # dy = DouYin(self.author_page_link)
-        # dy.judge_link()
-        # self.saved_aweme_ids = dy.aweme_ids
-        # # time.sleep(interval + random.randint(-60, 60))
-        # time.sleep(interval)
 
         while True:
             if not find_in_config(self.owner, self.author_page_link):
@@ -52,19 +47,18 @@ class DouYinJianKong(object):
             new_captions = []
 
             print(str(datetime.datetime.now()) + " " + self.author_page_link)
-            dy = DouYin(self.author_page_link)
-            dy.getProfile()
+            posts, nickname = henhenmao.get_dy_profile()
 
-            for aweme_id in dy.aweme_ids:
-                if self.saved_aweme_ids and aweme_id not in self.saved_aweme_ids:
-                    index = dy.aweme_ids.index(aweme_id)
-                    new_video_urls.append(dy.video_urls[index])
-                    new_captions.append(dy.captions[index])
+            for a_post in posts:
+                if self.saved_posts and a_post not in self.saved_posts:
+                    # index = dy.aweme_ids.index(aweme_id)
+                    new_video_urls.append(a_post['medias']['resource_url'])
+                    new_captions.append(a_post['text'])
 
-            self.saved_aweme_ids = dy.aweme_ids
+            self.saved_posts = posts
 
-            print("当前：", dy.captions)
-            print("新的：", new_captions)
+            # print("当前：", dy.captions)
+            # print("新的：", new_captions)
             # print("新的：%s", new_ video_urls)
 
             if new_video_urls:
@@ -73,9 +67,9 @@ class DouYinJianKong(object):
                 random_owner = random.sample(owners, 1)
                 send_mail(random_owner + "\r" + dy.nickname + "\r" + self.author_page_link,
                           new_captions[0] + "\r" + new_video_urls[0])
-                send_txt("监控到新动态：" + dy.nickname + " " + new_captions[0])
+                send_txt("监控到新动态：" + nickname + " " + new_captions[0])
             else:
-                send_txt("没有新动态：" + dy.nickname)
+                send_txt("没有新动态：" + nickname)
 
             current_hour = int(datetime.datetime.now().strftime('%H'))
             if current_hour == 0:
